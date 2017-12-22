@@ -13,10 +13,7 @@
             </audio>
             <div class="controlContainer">
                 <p class="play" v-on:click="togglePlay">{{ playing ? `||` : `►`}}</p>
-                <div class="scrubberContainer">
-                    <div class="length"></div>
-                    <div class="progress"></div>
-                </div>
+                <progress-bar :percent="calculateCurrentPlayPercentage()"/> 
                 <div class="time">
                     <span class="current">{{ getTimeAsString(currentTime) }}</span> /
                     <span class="duration">{{ getTimeAsString(duration) }}</span>
@@ -37,6 +34,9 @@ interface PodcastState {
 }
 
 import Vue from "vue";
+import ProgressBar from "./ProgressBar.vue";
+import { getTimeAsString } from "../util";
+
 export default Vue.extend({
   data(): PodcastState {
     return {
@@ -62,6 +62,9 @@ export default Vue.extend({
       required: true
     }
   },
+  components: {
+    ProgressBar
+  },
   methods: {
     updateTime: function(event: Event) {
       const audio = event.target as HTMLAudioElement;
@@ -80,26 +83,12 @@ export default Vue.extend({
       const audio = event.target as HTMLAudioElement;
       this.duration = audio.duration;
     },
-    getTimeAsString: function(seconds: number): string {
-      const fullMinutes = Math.floor(seconds / 60);
+    calculateCurrentPlayPercentage: function(): number {
+      if (this.currentTime === 0) return 0;
 
-      const remainingSeconds = addLeadingZeroIfNecessary(
-        Math.floor(seconds - fullMinutes * 60)
-      );
-
-      const timeString = `${fullMinutes}:${remainingSeconds}`;
-
-      return timeString;
-
-      function addLeadingZeroIfNecessary(number) {
-        const numberAsString = number.toString();
-        if (numberAsString.length === 1) {
-          return `0${numberAsString}`;
-        } else {
-          return numberAsString;
-        }
-      }
-    }
+      return this.currentTime / this.duration * 100;
+    },
+    getTimeAsString: getTimeAsString
   }
 });
 </script>
@@ -135,28 +124,5 @@ export default Vue.extend({
 .controlContainer .time,
 .controlContainer .play {
   margin: auto 0;
-}
-
-.scrubberContainer {
-  flex-basis: 50%;
-  margin: auto 0;
-  position: relative;
-}
-
-.scrubberContainer div {
-  position: absolute;
-}
-
-.scrubberContainer .length {
-  background-color: gray;
-  height: 5px;
-  width: 100%;
-}
-
-.scrubberContainer .progress {
-  background-color: black;
-  height: 5px;
-  width: 0px;
-  z-index: 5;
 }
 </style>
