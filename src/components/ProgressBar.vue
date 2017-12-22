@@ -1,7 +1,7 @@
 <template>
     <div class="progressContainer">
-        <div ref="length" class="length"></div>
-        <div ref="progress" class="progress"></div>
+        <div ref="length" v-on:click="handleClick" class="length"></div>
+        <div ref="progress" v-on:click="handleClick" class="progress"></div>
     </div>
 </template>
 
@@ -13,6 +13,10 @@ export default Vue.extend({
     percent: {
       type: Number,
       required: true
+    },
+    updateFunction: {
+      type: Function,
+      required: false
     }
   },
   watch: {
@@ -29,6 +33,18 @@ export default Vue.extend({
       const lengthBarWidth = lengthBar.getBoundingClientRect().width;
 
       return lengthBarWidth * (percent / 100);
+    },
+    handleClick: function(event: Touch | MouseEvent) {
+      if (!this.$props.updateFunction) return;
+
+      const eventX = event.clientX;
+      const lengthBar = this.$refs.length as HTMLDivElement;
+      const lengthBarRectangle = lengthBar.getBoundingClientRect();
+
+      const newPercent =
+        (eventX - lengthBarRectangle.left) / lengthBarRectangle.width;
+
+      this.$props.updateFunction(newPercent);
     }
   }
 });

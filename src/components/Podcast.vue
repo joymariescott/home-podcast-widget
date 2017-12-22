@@ -13,7 +13,10 @@
             </audio>
             <div class="controlContainer">
                 <p class="play" v-on:click="togglePlay">{{ playing ? `||` : `►`}}</p>
-                <progress-bar :percent="calculateCurrentPlayPercentage()"/> 
+                <progress-bar
+                :percent="calculateCurrentPlayPercentage()"
+                :update-function="setTime"
+                /> 
                 <div class="time">
                     <span class="current">{{ getTimeAsString(currentTime) }}</span> /
                     <span class="duration">{{ getTimeAsString(duration) }}</span>
@@ -87,6 +90,10 @@ export default Vue.extend({
       if (this.currentTime === 0) return 0;
 
       return this.currentTime / this.duration * 100;
+    },
+    setTime: function(percentage: number): void {
+      const audio = this.$refs.audio as HTMLAudioElement;
+      audio.currentTime = this.duration * percentage;
     },
     getTimeAsString: getTimeAsString
   }
