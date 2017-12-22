@@ -9,6 +9,7 @@
             preload="metadata"
             v-on:timeupdate="updateTime"
             v-on:loadedmetadata="handleMetadata"
+            v-on:ended="handleAudioEnd"
             :src="file">
             </audio>
             <div class="controlContainer">
@@ -94,6 +95,10 @@ export default Vue.extend({
     setTime: function(percentage: number): void {
       const audio = this.$refs.audio as HTMLAudioElement;
       audio.currentTime = this.duration * percentage;
+    },
+    handleAudioEnd: function(event: Event): void {
+      this.currentTime = 0;
+      this.playing = false;
     },
     getTimeAsString: getTimeAsString
   }
