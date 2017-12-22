@@ -4,9 +4,15 @@
         <h2 class="podhed">Start your day with local news</h2>
         <p class="podtext">{{ chatter }}</p>
         <div class="audioContainer">
-            <audio ref="audio" preload="metadata" v-on:timeupdate="updateTime" v-on:loadedmetadata="handleMetadata" :src="file"></audio>
+            <audio
+            ref="audio"
+            preload="metadata"
+            v-on:timeupdate="updateTime"
+            v-on:loadedmetadata="handleMetadata"
+            :src="file">
+            </audio>
             <div class="controlContainer">
-                <p class="play" v-on:click="togglePlay">&#9658;</p>
+                <p class="play" v-on:click="togglePlay">{{ playing ? `||` : `►`}}</p>
                 <div class="scrubberContainer">
                     <div class="length"></div>
                     <div class="progress"></div>
