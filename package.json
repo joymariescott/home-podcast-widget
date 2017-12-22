@@ -1,10 +1,9 @@
 {
-  "name": "saen-vue-template",
+  "name": "saen-home-podcast-widget",
   "version": "0.0.1",
-  "description": "Template to spin up Vue applications with TypeScript",
+  "description": "Home-page podcast player for expressnews.com",
   "main": "index.js",
   "scripts": {
-    "test": "test",
     "build": "NODE_ENV='production' webpack"
   },
   "keywords": [
