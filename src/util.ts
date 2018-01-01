@@ -18,3 +18,9 @@ export function getTimeAsString(seconds: number): string {
         }
     }
 }
+
+export function sendGAPodcastEvent(action: string, label: string): void {
+    if (window.ens_specialEvent) {
+        window.ens_specialEvent('Podcasts', action, label);
+    }
+}
