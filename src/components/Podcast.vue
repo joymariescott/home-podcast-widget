@@ -1,5 +1,5 @@
 <template>
-      <div class="podContainer">
+      <div class="podcast" :class="{ active }">
         <img class="podcastImage" :src="image">
         <h2 class="podhed">{{ title }}</h2>
         <p class="podtext">{{ chatter }}</p>
@@ -72,6 +72,9 @@ export default Vue.extend({
     file: {
       type: String,
       required: true
+    },
+    active: {
+      type: Boolean
     }
   },
   components: {
@@ -113,8 +116,6 @@ export default Vue.extend({
     sendGAPodcastEvent(action: string, label: string): void {
       if (window.ens_specialEvent) {
         window.ens_specialEvent("Podcasts", action, label);
-      } else {
-        console.log(action, label);
       }
     },
     generatePodcastTitleForGA: function(): string {
@@ -143,6 +144,12 @@ export default Vue.extend({
 
 
 <style>
+.podcast {
+  display: none;
+}
+.podcast.active {
+  display: block;
+}
 .podcastImage {
   float: left;
   padding-right: 10px;

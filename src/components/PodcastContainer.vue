@@ -1,14 +1,17 @@
 <template>
-<div>
-  <podcast
-    v-for="(podcast, index) in podcasts"
-    :title="podcast.title"
-    :image="podcast.image"
-    :chatter="podcast.chatter"
-    :file="podcast.file"
-    :key="index"
-  />
-  </div>
+  <div class="podcastContainer">
+    <podcast
+      v-for="(podcast, index) in podcasts"
+      :title="podcast.title"
+      :image="podcast.image"
+      :chatter="podcast.chatter"
+      :file="podcast.file"
+      :active="currentPodcastIndex === index"
+      :key="index"
+    />
+    <button v-on:click="incrementPodcastIndex">Next</button>
+    <button v-on:click="decrementPodcastIndex">Previous</button>
+    </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -31,7 +34,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      podcasts: []
+      podcasts: [],
+      currentPodcastIndex: 0
     };
   },
   mounted(): void {
@@ -53,6 +57,22 @@ export default Vue.extend({
         this.podcasts = fallbackPodcastData;
       }
     });
+  },
+  methods: {
+    incrementPodcastIndex: function(): void {
+      if (this.currentPodcastIndex === this.podcasts.length - 1) {
+        this.currentPodcastIndex = 0;
+      } else {
+        this.currentPodcastIndex++;
+      }
+    },
+    decrementPodcastIndex: function(): void {
+      if (this.currentPodcastIndex === 0) {
+        this.currentPodcastIndex = this.podcasts.length - 1;
+      } else {
+        this.currentPodcastIndex--;
+      }
+    }
   }
 });
 </script>
