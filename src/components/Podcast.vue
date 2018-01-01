@@ -1,7 +1,7 @@
 <template>
       <div class="podContainer">
         <img class="podcastImage" :src="image">
-        <h2 class="podhed">Start your day with local news</h2>
+        <h2 class="podhed">{{ title }}</h2>
         <p class="podtext">{{ chatter }}</p>
         <div class="audioContainer">
             <audio
@@ -53,6 +53,10 @@ export default Vue.extend({
     };
   },
   props: {
+    title: {
+      type: String,
+      required: true
+    },
     image: {
       type: String,
       required: true
@@ -107,7 +111,7 @@ export default Vue.extend({
 
 
 <style>
-.podcastimage {
+.podcastImage {
   float: left;
   padding-right: 10px;
   width: 72px;
