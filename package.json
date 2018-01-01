@@ -6,6 +6,7 @@
   "scripts": {
     "build": "NODE_ENV='production' webpack"
   },
+  "repository": "https://github.com/sa-express-news/home-podcast-widget",
   "keywords": [
     "Vue"
   ],
