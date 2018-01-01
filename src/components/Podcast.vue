@@ -10,10 +10,14 @@
             v-on:timeupdate="updateTime"
             v-on:loadedmetadata="handleMetadata"
             v-on:ended="handleAudioEnd"
+            v-on:ended.once="sendGAPodcastEvent(`Podcast Full Playthrough`, generatePodcastTitle())"
             :src="file">
             </audio>
             <div class="controlContainer">
-                <p class="play" v-on:click="togglePlay">{{ playing ? `||` : `►`}}</p>
+                <p class="play"
+                v-on:click="togglePlay"
+                v-on:click.once="sendGAPodcastEvent(`Podcast Play`, generatePodcastTitle())">
+                {{ playing ? `||` : `►`}}</p>
                 <progress-bar
                 :percent="calculateCurrentPlayPercentage()"
                 :update-function="setTime"
@@ -103,6 +107,16 @@ export default Vue.extend({
     handleAudioEnd: function(event: Event): void {
       this.currentTime = 0;
       this.playing = false;
+    },
+    sendGAPodcastEvent(action: string, label: string): void {
+      if (window.ens_specialEvent) {
+        window.ens_specialEvent("Podcasts", action, label);
+      } else {
+        console.log(action, label);
+      }
+    },
+    generatePodcastTitle: function(): string {
+      return `${this.$props.title} - ${new Date().toLocaleDateString()}`;
     },
     getTimeAsString: getTimeAsString
   }
