@@ -1,12 +1,12 @@
 import Vue from "vue";
-import Hello from './components/Hello.vue';
+import PodcastContainer from './components/PodcastContainer.vue';
 
 const v = new Vue({
     el: "#root",
     template: `
-        <hello />
+        <podcast-container/>
     `,
     components: {
-        Hello
+        PodcastContainer
     }
 });
