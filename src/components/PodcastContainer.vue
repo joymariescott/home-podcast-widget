@@ -19,7 +19,11 @@ import {
   PodcastEpisode,
   getPodcast
 } from "libsyn-feed-parser";
-import { httpPodcastFeedUrls, httpsPodcastFeedUrls } from "../constants";
+import {
+  httpPodcastFeedUrls,
+  httpsPodcastFeedUrls,
+  fallbackPodcastData
+} from "../constants";
 
 export default Vue.extend({
   components: {
@@ -30,7 +34,7 @@ export default Vue.extend({
       podcasts: []
     };
   },
-  mounted() {
+  mounted(): void {
     let feeds: string[] = window.location.protocol.includes("https")
       ? httpsPodcastFeedUrls
       : httpPodcastFeedUrls;
@@ -45,7 +49,9 @@ export default Vue.extend({
           chatter: meta.description,
           file: episodes[0].audioFileURL
         });
-      } catch (e) {}
+      } catch (error) {
+        this.podcasts = fallbackPodcastData;
+      }
     });
   }
 });
