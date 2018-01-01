@@ -10,13 +10,13 @@
             v-on:timeupdate="updateTime"
             v-on:loadedmetadata="handleMetadata"
             v-on:ended="handleAudioEnd"
-            v-on:ended.once="sendGAPodcastEvent(`Podcast Full Playthrough`, generatePodcastTitle())"
+            v-on:ended.once="sendGAPodcastEvent(`Podcast Full Playthrough`, generatePodcastTitleForGA())"
             :src="file">
             </audio>
             <div class="controlContainer">
                 <p class="play"
                 v-on:click="togglePlay"
-                v-on:click.once="sendGAPodcastEvent(`Podcast Play`, generatePodcastTitle())">
+                v-on:click.once="sendGAPodcastEvent(`Podcast Play`, generatePodcastTitleForGA())">
                 {{ playing ? `||` : `►`}}</p>
                 <progress-bar
                 :percent="calculateCurrentPlayPercentage()"
@@ -81,6 +81,8 @@ export default Vue.extend({
     updateTime: function(event: Event) {
       const audio = event.target as HTMLAudioElement;
       this.currentTime = audio.currentTime;
+
+      this.sendPlayPercentageEvents();
     },
     togglePlay: function(event: Event) {
       const audio = this.$refs.audio as HTMLAudioElement;
@@ -115,8 +117,24 @@ export default Vue.extend({
         console.log(action, label);
       }
     },
-    generatePodcastTitle: function(): string {
+    generatePodcastTitleForGA: function(): string {
       return `${this.$props.title} - ${new Date().toLocaleDateString()}`;
+    },
+    sendPlayPercentageEvents: function(): void {
+      const currentPlayPercentage = this.calculateCurrentPlayPercentage();
+      if (currentPlayPercentage < 25) return;
+      const podcastTitle = this.generatePodcastTitleForGA();
+
+      if (currentPlayPercentage >= 25 && !this.fourthEventSent) {
+        this.sendGAPodcastEvent("Podcast 1/4 Playthrough", podcastTitle);
+        this.fourthEventSent = true;
+      } else if (currentPlayPercentage >= 50 && !this.halfEventSent) {
+        this.sendGAPodcastEvent("Podcast 1/2 Playthrough", podcastTitle);
+        this.halfEventSent = true;
+      } else if (currentPlayPercentage >= 75 && !this.threeQuartersEventSent) {
+        this.sendGAPodcastEvent("Podcast 3/4 Playthrough", podcastTitle);
+        this.threeQuartersEventSent = true;
+      }
     },
     getTimeAsString: getTimeAsString
   }
