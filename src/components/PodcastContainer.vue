@@ -9,8 +9,9 @@
       :active="currentPodcastIndex === index"
       :key="index"
     />
-    <button v-on:click="incrementPodcastIndex">Next</button>
     <button v-on:click="decrementPodcastIndex">Previous</button>
+    <button v-on:click="incrementPodcastIndex">Next</button>
+    <p>Check out <a href="http://www.expressnews.com/podcasts/" title="Express-News podcasts">our podcast page</a> for more.</p>
     </div>
 </template>
 <script lang="ts">
