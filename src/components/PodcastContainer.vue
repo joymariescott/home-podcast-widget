@@ -9,8 +9,8 @@
       :active="currentPodcastIndex === index"
       :key="index"
     />
-    <button v-on:click="decrementPodcastIndex">Previous</button>
-    <button v-on:click="incrementPodcastIndex">Next</button>
+    <button v-on:click="handleDecrement">Previous</button>
+    <button v-on:click="handleIncrement">Next</button>
     <p>Check out <a href="http://www.expressnews.com/podcasts/" title="Express-News podcasts">our podcast page</a> for more.</p>
     </div>
 </template>
@@ -28,6 +28,7 @@ import {
   httpsPodcastFeedUrls,
   fallbackPodcastData
 } from "../constants";
+import eventHub from "./eventHub";
 
 export default Vue.extend({
   components: {
@@ -60,6 +61,17 @@ export default Vue.extend({
     });
   },
   methods: {
+    handleIncrement: function(): void {
+      this.incrementPodcastIndex();
+      this.emitReset();
+    },
+    handleDecrement: function(): void {
+      this.decrementPodcastIndex();
+      this.emitReset();
+    },
+    emitReset: function(): void {
+      eventHub.$emit("reset");
+    },
     incrementPodcastIndex: function(): void {
       if (this.currentPodcastIndex === this.podcasts.length - 1) {
         this.currentPodcastIndex = 0;

@@ -44,6 +44,7 @@ interface PodcastState {
 import Vue from "vue";
 import ProgressBar from "./ProgressBar.vue";
 import { getTimeAsString } from "../util";
+import eventHub from "./eventHub";
 
 export default Vue.extend({
   data(): PodcastState {
@@ -79,6 +80,12 @@ export default Vue.extend({
   },
   components: {
     ProgressBar
+  },
+  created: function() {
+    eventHub.$on("reset", this.reset);
+  },
+  beforeDestroy: function() {
+    eventHub.$off("reset", this.reset);
   },
   methods: {
     updateTime: function(event: Event) {
@@ -136,6 +143,14 @@ export default Vue.extend({
         this.sendGAPodcastEvent("Podcast 3/4 Playthrough", podcastTitle);
         this.threeQuartersEventSent = true;
       }
+    },
+    reset: function(): void {
+      const audio = this.$refs.audio as HTMLAudioElement;
+      audio.pause();
+      this.playing = false;
+      // Use if you want to also reset the time.
+      // audio.currentTime = 0;
+      // this.currentTime = 0;
     },
     getTimeAsString: getTimeAsString
   }
