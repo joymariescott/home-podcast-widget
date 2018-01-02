@@ -2,7 +2,7 @@ import Vue from "vue";
 import PodcastContainer from './components/PodcastContainer.vue';
 
 const v = new Vue({
-    el: "#root",
+    el: "#home-podcast-root",
     template: `
         <podcast-container/>
     `,
