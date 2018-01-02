@@ -159,10 +159,19 @@ export default Vue.extend({
 
 
 <style>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 .podcast {
   display: none;
 }
 .podcast.active {
+  animation: fadeIn 0.5s linear;
   display: block;
 }
 .podcastImage {
@@ -181,6 +190,7 @@ export default Vue.extend({
 }
 
 .controlContainer {
+  clear: both;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
