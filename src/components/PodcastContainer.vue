@@ -9,8 +9,16 @@
       :active="currentPodcastIndex === index"
       :key="index"
     />
-    <button v-on:click="handleDecrement">Previous</button>
-    <button v-on:click="handleIncrement">Next</button>
+    <h3>More podcasts:</h3>
+    <div class="moreContainer">
+      <img
+      v-for="(podcast, index) in podcasts"
+      :class="{active: index === currentPodcastIndex}"
+      :key="index"
+      :src="podcast.image"
+      v-on:click="updatePodcastIndex(index)"
+      />
+    </div>
     <p>Check out <a href="http://www.expressnews.com/podcasts/" title="Express-News podcasts">our podcast page</a> for more.</p>
     </div>
 </template>
@@ -40,11 +48,27 @@ export default Vue.extend({
       currentPodcastIndex: 0
     };
   },
+  computed: {
+    previousPodcastTitle(): string {
+      if (this.currentPodcastIndex === 0) {
+        return this.podcasts[this.podcasts.length - 1].title;
+      } else {
+        return this.podcasts[this.currentPodcastIndex - 1].title;
+      }
+    },
+    nextPodcastTitle(): string {
+      if (this.currentPodcastIndex === this.podcasts.length - 1) {
+        return this.podcasts[0].title;
+      } else {
+        return this.podcasts[this.currentPodcastIndex + 1].title;
+      }
+    }
+  },
   mounted(): void {
     let feeds: string[] = window.location.protocol.includes("https")
       ? httpsPodcastFeedUrls
       : httpPodcastFeedUrls;
-    feeds.forEach(async (url: string) => {
+    feeds.forEach(async (url: string, index: number) => {
       try {
         const podcast: IPodcast = await getPodcast(url);
         const { meta, episodes } = podcast;
@@ -61,31 +85,32 @@ export default Vue.extend({
     });
   },
   methods: {
-    handleIncrement: function(): void {
-      this.incrementPodcastIndex();
-      this.emitReset();
-    },
-    handleDecrement: function(): void {
-      this.decrementPodcastIndex();
-      this.emitReset();
-    },
     emitReset: function(): void {
       eventHub.$emit("reset");
     },
-    incrementPodcastIndex: function(): void {
-      if (this.currentPodcastIndex === this.podcasts.length - 1) {
-        this.currentPodcastIndex = 0;
-      } else {
-        this.currentPodcastIndex++;
-      }
-    },
-    decrementPodcastIndex: function(): void {
-      if (this.currentPodcastIndex === 0) {
-        this.currentPodcastIndex = this.podcasts.length - 1;
-      } else {
-        this.currentPodcastIndex--;
-      }
+    updatePodcastIndex: function(newIndex: number): void {
+      this.currentPodcastIndex = newIndex;
+      this.emitReset();
     }
   }
 });
 </script>
+<style>
+.podcastContainer .more {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.moreContainer {
+  display: flex;
+  flex-flow: row wrap;
+}
+.moreContainer img {
+  cursor: pointer;
+  flex-basis: 20%;
+  max-height: 72px;
+  max-width: 72px;
+}
+.moreContainer .active {
+  display: none;
+}
+</style>
