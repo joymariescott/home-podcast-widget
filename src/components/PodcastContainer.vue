@@ -19,7 +19,7 @@
       v-on:click="updatePodcastIndex(index)"
       /> 
     </div>
-    <p>Find past episodes on <a href="/podcasts/" title="Express-News podcasts">our podcast page.</a></p>
+    <p>Find more information on <a href="/podcasts/" title="Express-News podcasts">our podcast page.</a></p>
     </div>
 </template>
 <script lang="ts">
@@ -109,6 +109,15 @@ export default Vue.extend({
 .podcastContainer a {
   text-decoration: underline;
 }
+
+.podcastContainer > h3 {
+  margin-bottom: 0.5em;
+}
+
+.podcastContainer > p:last-of-type {
+  margin-top: 0.5em;
+}
+
 .moreContainer {
   display: flex;
   flex-flow: row wrap;

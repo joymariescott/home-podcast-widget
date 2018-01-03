@@ -186,7 +186,7 @@ export default Vue.extend({
 }
 
 .audioContainer {
-  margin-bottom: 0.5em;
+  margin: .5em 0;
 }
 
 .controlContainer {
