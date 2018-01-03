@@ -17,9 +17,9 @@
       :key="index"
       :src="podcast.image"
       v-on:click="updatePodcastIndex(index)"
-      />
+      /> 
     </div>
-    <p>Check out <a href="http://www.expressnews.com/podcasts/" title="Express-News podcasts">our podcast page</a> for more.</p>
+    <p>Find past episodes on <a href="/podcasts/" title="Express-News podcasts">our podcast page.</a></p>
     </div>
 </template>
 <script lang="ts">
@@ -105,13 +105,17 @@ export default Vue.extend({
   cursor: pointer;
   text-decoration: underline;
 }
+
+.podcastContainer a {
+  text-decoration: underline;
+}
 .moreContainer {
   display: flex;
   flex-flow: row wrap;
 }
 .moreContainer img {
   cursor: pointer;
-  flex-basis: 20%;
+  flex-basis: 15%;
   max-height: 72px;
   max-width: 72px;
 }
