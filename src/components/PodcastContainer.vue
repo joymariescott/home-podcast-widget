@@ -68,21 +68,26 @@ export default Vue.extend({
     let feeds: string[] = window.location.protocol.includes("https")
       ? httpsPodcastFeedUrls
       : httpPodcastFeedUrls;
-    feeds.forEach(async (url: string, index: number) => {
-      try {
-        const podcast: IPodcast = await getPodcast(url);
-        const { meta, episodes } = podcast;
 
-        this.podcasts.push({
-          title: meta.title,
-          image: meta.imageURL,
-          chatter: meta.description,
-          file: episodes[0].audioFileURL
-        });
-      } catch (error) {
-        this.podcasts = fallbackPodcastData;
-      }
+    const podcastData = feeds.map(async (url: string) => {
+      const podcast: IPodcast = await getPodcast(url);
+      const { meta, episodes } = podcast;
+
+      return {
+        title: meta.title,
+        image: meta.imageURL,
+        chatter: meta.description,
+        file: episodes[0].audioFileURL
+      };
     });
+
+    Promise.all(podcastData)
+      .then(loadedPodcasts => {
+        this.podcasts = loadedPodcasts;
+      })
+      .catch(error => {
+        this.podcasts = fallbackPodcastData;
+      });
   },
   methods: {
     emitReset: function(): void {
