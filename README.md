@@ -119,4 +119,10 @@ If you want to add the podcast widget to your Hearst site *anywhere other than t
 
  ## Troubleshooting/Bug reports ##
 
+ ###### I updated my code in the WCM but nothing is changing on the page! ######
+
+ Yeah, the WCM is *reaaaaalllly* slow about updating its file cache. If you need something changed in less than a day (give or take), I recommend hosting the updated JS on Amazon S3 or another similar service until the cache updates.
+
+ <hr/>
+
  Questions? Concerns? [File an issue](https://github.com/sa-express-news/home-podcast-widget/issues) or reach out to Kia Farhang at `mfarhang@express-news.net` directly.
