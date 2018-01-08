@@ -6,7 +6,7 @@
         <div class="audioContainer">
             <audio
             ref="audio"
-            preload="metadata"
+            preload="none"
             v-on:timeupdate="updateTime"
             v-on:loadedmetadata="handleMetadata"
             v-on:ended="handleAudioEnd"
