@@ -1,17 +1,14 @@
 import Vue from "vue";
 import PodcastContainer from './components/PodcastContainer.vue';
+import { isWeekend, isPastNoonLocalTime } from './util';
 
 const homePodcastWidget = (): void => {
-    // We only want the widget to show up until noon central time.
-    // So we calculate a cutoff and only run the widget code if the current time is before that.
+    // The widget should show up until noon on the user's machine - unless it's a weekend.
+    // On weekends (Friday-Sunday), we want to keep it up regardless of time of day.
 
     const now = new Date();
 
-    const cutoff = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0));
-
-    const nowUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()));
-
-    if (nowUTC > cutoff) return;
+    if (isPastNoonLocalTime(now) && !isWeekend(now)) return;
 
     // The EN CMS duplicates the HTML 'zone' where we place the root for
     // the podcast widget. This makes targetting it a pain. So we 
