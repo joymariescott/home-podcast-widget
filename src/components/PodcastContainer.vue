@@ -37,6 +37,7 @@ import {
   fallbackPodcastData
 } from "../constants";
 import eventHub from "./eventHub";
+import { isWeekend } from "../util";
 
 export default Vue.extend({
   components: {
@@ -68,6 +69,8 @@ export default Vue.extend({
     let feeds: string[] = window.location.protocol.includes("https")
       ? httpsPodcastFeedUrls
       : httpPodcastFeedUrls;
+
+    if (isWeekend(new Date())) feeds.reverse();
 
     const podcastData = feeds.map(async (url: string) => {
       const podcast: IPodcast = await getPodcast(url);
