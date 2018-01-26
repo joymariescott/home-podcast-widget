@@ -37,7 +37,7 @@ import {
   fallbackPodcastData
 } from "../constants";
 import eventHub from "./eventHub";
-import { isWeekend } from "../util";
+import { isWeekend, isPastNoonLocalTime } from "../util";
 
 export default Vue.extend({
   components: {
@@ -70,7 +70,13 @@ export default Vue.extend({
       ? httpsPodcastFeedUrls
       : httpPodcastFeedUrls;
 
-    if (isWeekend(new Date())) feeds.reverse();
+    const now = new Date();
+
+    if (isPastNoonLocalTime(now) && now.getDay() === 5) {
+      feeds.reverse();
+    } else if (now.getDay() === 6 || now.getDay() === 0) {
+      feeds.reverse();
+    }
 
     const podcastData = feeds.map(async (url: string) => {
       const podcast: IPodcast = await getPodcast(url);
