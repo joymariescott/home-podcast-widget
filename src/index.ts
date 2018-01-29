@@ -3,12 +3,6 @@ import PodcastContainer from './components/PodcastContainer.vue';
 import { isWeekend, isPastNoonLocalTime } from './util';
 
 const homePodcastWidget = (): void => {
-    // The widget should show up until noon on the user's machine - unless it's a weekend.
-    // On weekends (Friday-Sunday), we want to keep it up regardless of time of day.
-
-    const now = new Date();
-
-    if (isPastNoonLocalTime(now) && !isWeekend(now)) return;
 
     // The EN CMS duplicates the HTML 'zone' where we place the root for
     // the podcast widget. This makes targetting it a pain. So we 
