@@ -31,11 +31,8 @@ import {
   PodcastEpisode,
   getPodcast
 } from "libsyn-feed-parser";
-import {
-  httpPodcastFeedUrls,
-  httpsPodcastFeedUrls,
-  fallbackPodcastData
-} from "../constants";
+import { fallbackPodcastData } from "../constants";
+import { generatePodcastList } from "../podcasts";
 import eventHub from "./eventHub";
 import { isWeekend, isPastNoonLocalTime } from "../util";
 
@@ -66,17 +63,10 @@ export default Vue.extend({
     }
   },
   mounted(): void {
+    const podcastList = generatePodcastList();
     let feeds: string[] = window.location.protocol.includes("https")
-      ? httpsPodcastFeedUrls
-      : httpPodcastFeedUrls;
-
-    const now = new Date();
-
-    if (isPastNoonLocalTime(now) && now.getDay() === 5) {
-      feeds.reverse();
-    } else if (now.getDay() === 6 || now.getDay() === 0) {
-      feeds.reverse();
-    }
+      ? podcastList.https
+      : podcastList.http;
 
     const podcastData = feeds.map(async (url: string) => {
       const podcast: IPodcast = await getPodcast(url);
