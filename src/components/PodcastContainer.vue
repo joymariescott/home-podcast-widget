@@ -127,6 +127,11 @@ export default Vue.extend({
   max-height: 72px;
   max-width: 72px;
 }
+
+.moreContainer img:not(:last-of-type){
+  margin-right: .25em;
+}
+
 .moreContainer .active {
   display: none;
 }
