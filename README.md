@@ -34,21 +34,59 @@ Then open `index.html` in a browser. You should see a (very large) podcast widge
 
 ### Changing the widget podcasts ###
 
-Adding or subtracting podcasts to the widget is simple. The widget looks in the `src/constants.ts` file to generate the list of Libsyn RSS feeds it should use. Look for this section:
+Adding or subtracting podcasts to the widget is simple. Open up `src/podcasts.ts` and look for this section:
 
 ```typescript
-export const httpPodcastFeedUrls: string[] = [
-    'http://expressbriefing.expressnews.libsynpro.com/rss',
-    'http://endepth.expressnews.libsynpro.com/rss'
-]
 
-export const httpsPodcastFeedUrls: string[] = [
-    'https://expressbriefing.libsyn.com/rss',
-    'https://endepth.libsyn.com/rss'
-];
+// URLs - both HTTP and HTTPS - for every EN podcast RSS feed.
+
+    const expressBriefingHTTP = 'http://expressbriefing.expressnews.libsynpro.com/rss';
+    const expressBriefingHTTPS = 'https://expressbriefing.libsyn.com/rss';
+
+    const enDepthHTTP = 'http://endepth.expressnews.libsynpro.com/rss';
+    const enDepthHTTPS = 'https://endepth.libsyn.com/rss';
+
+    const theDocketHTTP = 'http://thedocket.expressnews.libsynpro.com/rss';
+    const theDocketHTTPS = 'https://thedocket.libsyn.com/rss';
 ```
 
-Add the HTTP and HTTPS versions of your podcasts' RSS feeds to these arrays and, once you build the project (discussed below) the widget will include them.
+This is where we keep track of the HTTP and HTTPS versions of every Express-News podcast Libsyn RSS feeds. You can grab the HTTP link from the Libsyn back end for a given show - or you can copy one of the other links and change the title; they're all formatted the same. Same with HTTPS.
+
+Further down in that same file, you'll see something like this:
+
+```typescript
+const now = new Date();
+
+    const dayOfWeek = now.getDay();
+
+    switch (dayOfWeek) {
+        // Monday
+        case 1:
+            return {
+                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP],
+                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS]
+            }
+        // Friday
+        case 5:
+            return {
+                http: [enDepthHTTP, expressBriefingHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, theDocketHTTPS]
+            }
+        default:
+            return {
+                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP],
+                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS]
+            }
+    }
+```
+
+This is where we set up a sort of schedule for our podcasts, based on the current day of the week. Here's what the above snippet translates to:
+
+- On Monday, the widget should lead with The Docket, then Express Briefing, then EN-Depth.
+- On Friday, the widget should lead with EN-Depth, then Express Briefing, then the Docket.
+- On every other day, the widget will lead with Express Briefing, then EN-Depth, then The Docket.
+
+Changing the order for a given day is as simple as rearranging the variables in the `http` and `https` arrays. Adding a rule for another day? Just add another `case` statement and return a similar object. (And remember, Sunday is 0 in JS and Satruday is 6).
 
 (As of this widget's creation - January 2018 - Hearst has not fully switched its sites to the HTTPS protocol. To avoid cross-protocol issues, we include separate arrays for HTTP and HTTPS feeds.)
 
@@ -107,7 +145,7 @@ If you want to add the podcast widget to your Hearst site *anywhere other than t
 
  If you want to add the widget to the top-right section of the home page, like [on the Express-News site](http://expressnews.com), it takes an extra step.
 
- - Upload the widget JS sourcemap just like you would above.
+ - Upload the widget JS just like you would above.
  - Create a WCM freeform that contains *just* the empty `<div>` with the ID of `home-podcast-root`.
  - Create a *second* freeform containing the `<script>` tag linking to the JS file.
  - Add the HTML freeform to the top-right "zone" of the home page.
