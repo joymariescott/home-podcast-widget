@@ -16,6 +16,9 @@ export const generatePodcastList = (): PodcastListObject => {
     const theDocketHTTP = 'http://thedocket.expressnews.libsynpro.com/rss';
     const theDocketHTTPS = 'https://thedocket.libsyn.com/rss';
 
+    const spursHTTP = 'http://spursinsider.expressnews.libsynpro.com/rss';
+    const spursHTTPs = 'https://spursinsider.libsyn.com/rss';
+
     const now = new Date();
 
     const dayOfWeek = now.getDay();
@@ -24,19 +27,25 @@ export const generatePodcastList = (): PodcastListObject => {
         // Monday
         case 1:
             return {
-                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP],
-                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS]
+                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP, spursHTTP],
+                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS, spursHTTPs]
+            }
+        // Tuesday
+        case 2:
+            return {
+                http: [spursHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP],
+                https: [spursHTTPs, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS]
             }
         // Friday
         case 5:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, theDocketHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, theDocketHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
             }
         default:
             return {
-                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP],
-                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS]
+                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP, spursHTTP],
+                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS, spursHTTPs]
             }
     }
 }
