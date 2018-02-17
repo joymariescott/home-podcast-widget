@@ -24,6 +24,12 @@ export const generatePodcastList = (): PodcastListObject => {
     const dayOfWeek = now.getDay();
 
     switch (dayOfWeek) {
+        // Sunday
+        case 0:
+            return {
+                http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
+            }
         // Monday
         case 1:
             return {
@@ -38,6 +44,12 @@ export const generatePodcastList = (): PodcastListObject => {
             }
         // Friday
         case 5:
+            return {
+                http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
+            }
+        // Saturday
+        case 6:
             return {
                 http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
                 https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
