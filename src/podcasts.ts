@@ -19,6 +19,9 @@ export const generatePodcastList = (): PodcastListObject => {
     const spursHTTP = 'http://spursinsider.expressnews.libsynpro.com/rss';
     const spursHTTPs = 'https://spursinsider.libsyn.com/rss';
 
+    const tasteCastHTTP = 'http://tastecast.expressnews.libsynpro.com/rss';
+    const tasteCastHTTPS = 'https://tastecast.libsyn.com/rss'
+
     const now = new Date();
 
     const dayOfWeek = now.getDay();
@@ -42,6 +45,13 @@ export const generatePodcastList = (): PodcastListObject => {
                 http: [spursHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP],
                 https: [spursHTTPs, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS]
             }
+        // Wednesday
+        case 3: {
+            return {
+                http: [tasteCastHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP, enDepthHTTP],
+                https: [tasteCastHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS, enDepthHTTPS]
+            }
+        }
         // Friday
         case 5:
             return {
@@ -56,8 +66,8 @@ export const generatePodcastList = (): PodcastListObject => {
             }
         default:
             return {
-                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP, spursHTTP],
-                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS, spursHTTPs]
+                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP, spursHTTP, tasteCastHTTP],
+                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS, spursHTTPs, tasteCastHTTPS]
             }
     }
 }
