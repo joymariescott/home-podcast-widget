@@ -1,3 +1,5 @@
+import { getFirstDayInMonth } from './util';
+
 interface PodcastListObject {
     http: string[];
     https: string[];
@@ -20,54 +22,72 @@ export const generatePodcastList = (): PodcastListObject => {
     const spursHTTPs = 'https://spursinsider.libsyn.com/rss';
 
     const tasteCastHTTP = 'http://tastecast.expressnews.libsynpro.com/rss';
-    const tasteCastHTTPS = 'https://tastecast.libsyn.com/rss'
+    const tasteCastHTTPS = 'https://tastecast.libsyn.com/rss';
+
+    const bbqHTTP = 'http://52weeksofbbq.expressnews.libsynpro.com/rss';
+    const bbqHTTPS = 'https://52weeksofbbq.libsyn.com/rss';
 
     const now = new Date();
 
     const dayOfWeek = now.getDay();
 
+    // If it's the first Friday of the month, lead with BBQ
+
+    // if (getFirstDayInMonth(now, 5).getDate() === now.getDate()) {
+    //     return {
+    //         http: [bbqHTTP, expressBriefingHTTP, enDepthHTTP, tasteCastHTTP, spursHTTP, theDocketHTTP],
+    //         https: [bbqHTTPS, expressBriefingHTTPS, enDepthHTTPS, tasteCastHTTPS, spursHTTPs, theDocketHTTPS]
+    //     }
+    // }
     switch (dayOfWeek) {
         // Sunday
         case 0:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, tasteCastHTTP, spursHTTP, theDocketHTTP, bbqHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, tasteCastHTTPS, spursHTTPs, theDocketHTTPS, bbqHTTPS]
             }
         // Monday
         case 1:
             return {
-                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP, spursHTTP],
-                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS, spursHTTPs]
+                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP, tasteCastHTTP, spursHTTP, bbqHTTP],
+                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS, tasteCastHTTPS, spursHTTPs, bbqHTTPS]
             }
         // Tuesday
         case 2:
             return {
-                http: [spursHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP],
-                https: [spursHTTPs, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS]
+                http: [spursHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP, tasteCastHTTP, bbqHTTP],
+                https: [spursHTTPs, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS, tasteCastHTTPS, bbqHTTPS]
             }
         // Wednesday
         case 3: {
             return {
-                http: [tasteCastHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP, enDepthHTTP],
-                https: [tasteCastHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS, enDepthHTTPS]
+                http: [tasteCastHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP, enDepthHTTP, bbqHTTP],
+                https: [tasteCastHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS, enDepthHTTPS, bbqHTTPS]
+            }
+        }
+        // Thursday
+        case 4: {
+            return {
+                http: [expressBriefingHTTP, tasteCastHTTP, spursHTTP, theDocketHTTP, enDepthHTTP, bbqHTTP],
+                https: [expressBriefingHTTPS, tasteCastHTTPS, spursHTTPs, theDocketHTTPS, enDepthHTTPS, bbqHTTPS]
             }
         }
         // Friday
         case 5:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, tasteCastHTTP, spursHTTP, theDocketHTTP, bbqHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, tasteCastHTTPS, spursHTTPs, theDocketHTTPS, bbqHTTPS]
             }
         // Saturday
         case 6:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, spursHTTP, theDocketHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, spursHTTPs, theDocketHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, tasteCastHTTP, spursHTTP, theDocketHTTP, bbqHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, tasteCastHTTPS, spursHTTPs, theDocketHTTPS, bbqHTTPS]
             }
         default:
             return {
-                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP, spursHTTP, tasteCastHTTP],
-                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS, spursHTTPs, tasteCastHTTPS]
+                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP, spursHTTP, tasteCastHTTP, bbqHTTP],
+                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS, spursHTTPs, tasteCastHTTPS, bbqHTTPS]
             }
     }
 }
