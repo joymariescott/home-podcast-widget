@@ -124,6 +124,7 @@ export default Vue.extend({
 .moreContainer img {
   cursor: pointer;
   flex-basis: 15%;
+  padding: 1px;
   max-height: 72px;
   max-width: 72px;
 }
