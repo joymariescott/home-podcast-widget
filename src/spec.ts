@@ -25,3 +25,22 @@ describe('isWeekend', () => {
         });
     });
 });
+describe('getFirstDayInMonth', () => {
+    it('returns a date', () => {
+        const date = util.getFirstDayInMonth(new Date(), 1);
+        assert.typeOf(date, "Date");
+    });
+    it('the date is the first date of the given day in the provided month', () => {
+        // The first Tuesday of March 2018 was the 6th
+        const shouldBeSix = util.getFirstDayInMonth(new Date('3/1/2018'), 2);
+        assert.strictEqual(shouldBeSix.getDate(), 6);
+
+        // The first Thursday of April 2019 is the 4th
+        const shouldBeFour = util.getFirstDayInMonth(new Date('4/15/2019'), 4);
+        assert.strictEqual(shouldBeFour.getDate(), 4);
+
+        // The first Monday of September 2020 is the 7th
+        const shouldBeSeven = util.getFirstDayInMonth(new Date('9/22/2020'), 1);
+        assert.strictEqual(shouldBeSeven.getDate(), 7);
+    });
+});

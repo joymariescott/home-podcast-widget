@@ -28,6 +28,18 @@ export const isPastNoonLocalTime = (date: Date): boolean => {
     return date > cutoff;
 }
 
+export const getFirstDayInMonth = (monthDate: Date, dayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6) => {
+    // const month = monthDate.getMonth();
+    const date = new Date(monthDate);
+    date.setDate(1);
+
+    while (date.getDay() !== dayOfWeek) {
+        date.setDate(date.getDate() + 1);
+    }
+
+    return date;
+}
+
 // export const isPastNoonCST = (date: Date): boolean => {
 //     const cutoff = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0));
 
