@@ -30,7 +30,7 @@ Run the [webpack](https://webpack.js.org/) build script while you develop:
 
 `npm run build -- --watch`
 
-Then open `index.html` in a browser. You should see a (very large) podcast widget waiting for your changes!
+Then open `index.html` in a browser. You should see a podcast widget waiting for your changes!
 
 ### Changing the widget podcasts ###
 
@@ -88,7 +88,7 @@ This is where we set up a sort of schedule for our podcasts, based on the curren
 
 Changing the order for a given day is as simple as rearranging the variables in the `http` and `https` arrays. Adding a rule for another day? Just add another `case` statement and return a similar object. (And remember, Sunday is 0 in JS and Satruday is 6).
 
-(As of this widget's creation - January 2018 - Hearst has not fully switched its sites to the HTTPS protocol. To avoid cross-protocol issues, we include separate arrays for HTTP and HTTPS feeds.)
+(Hearst has fully switched to HTTPS on its news sites, so the HTTP arrays/feed URLs are only kept around for some random edge case where they may be needed.)
 
 ### Changing widget presentation/behavior ###
 
