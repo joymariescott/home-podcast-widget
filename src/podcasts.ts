@@ -34,7 +34,7 @@ export const generatePodcastList = (): PodcastListObject => {
 
     const dayOfWeek = now.getDay();
 
-    // If it's the first Friday of the month, lead with BBQ. There is no case for this.
+    // If it's the first Friday of the month, lead with BBQ.
 
     // if (getFirstDayInMonth(now, 5).getDate() === now.getDate()) {
     //     return {
