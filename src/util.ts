@@ -40,6 +40,12 @@ export const getFirstDayInMonth = (monthDate: Date, dayOfWeek: 0 | 1 | 2 | 3 | 4
     return date;
 }
 
+export const spliceInPodcast = (podcastArr: string[], podcast: string, position: number): string[] => {
+    const cleanArr = podcastArr.slice();
+    cleanArr.splice(position, 0, podcast);
+    return cleanArr;
+}
+
 // export const isPastNoonCST = (date: Date): boolean => {
 //     const cutoff = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0));
 

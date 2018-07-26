@@ -44,3 +44,9 @@ describe('getFirstDayInMonth', () => {
         assert.strictEqual(shouldBeSeven.getDate(), 7);
     });
 });
+describe('spliceInPodcast', () => {
+    it('splices string into fourth position', () => {
+        const strArr = util.spliceInPodcast(['hello', 'world', 'i', 'nots', 'robot', 'promiz'], 'def', 3);
+        assert.strictEqual(strArr[3], 'def');
+    });
+});

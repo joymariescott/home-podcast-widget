@@ -1,13 +1,16 @@
-import { getFirstDayInMonth } from './util';
+import { getFirstDayInMonth, spliceInPodcast } from './util';
 
 interface PodcastListObject {
     http: string[];
     https: string[];
 }
 
-export const generatePodcastList = (): PodcastListObject => {
+const generatePodcastListBase = (): PodcastListObject => {
 
     // URLs - both HTTP and HTTPS - for every EN podcast RSS feed.
+
+    const spursHTTP = 'http://spursinsider.expressnews.libsynpro.com/rss';
+    const spursHTTPS = 'https://spursinsider.libsyn.com/rss';
 
     const expressBriefingHTTP = 'http://expressbriefing.expressnews.libsynpro.com/rss';
     const expressBriefingHTTPS = 'https://expressbriefing.libsyn.com/rss';
@@ -21,9 +24,6 @@ export const generatePodcastList = (): PodcastListObject => {
     const tasteCastHTTP = 'http://tastecast.expressnews.libsynpro.com/rss';
     const tasteCastHTTPS = 'https://tastecast.libsyn.com/rss';
 
-    const bbqHTTP = 'http://52weeksofbbq.expressnews.libsynpro.com/rss';
-    const bbqHTTPS = 'https://52weeksofbbq.libsyn.com/rss';
-
     const militaryCityHTTP = 'http://militarycity.expressnews.libsynpro.com/rss'
     const militaryCityHTTPS = 'https://militarycity.libsyn.com/rss'
 
@@ -34,63 +34,80 @@ export const generatePodcastList = (): PodcastListObject => {
 
     const dayOfWeek = now.getDay();
 
-    // If it's the first Friday of the month, lead with BBQ.
-
-    // if (getFirstDayInMonth(now, 5).getDate() === now.getDate()) {
-    //     return {
-    //         http: [bbqHTTP, expressBriefingHTTP, enDepthHTTP, tasteCastHTTP, spursHTTP, theDocketHTTP],
-    //         https: [bbqHTTPS, expressBriefingHTTPS, enDepthHTTPS, tasteCastHTTPS, spursHTTPs, theDocketHTTPS]
-    //     }
-    // }
     switch (dayOfWeek) {
         // Sunday
         case 0:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, tasteCastHTTP, theDocketHTTP, bbqHTTP, militaryCityHTTP, puroPoliticsHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, tasteCastHTTPS, theDocketHTTPS, bbqHTTPS, militaryCityHTTPS, puroPoliticsHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS]
             }
         // Monday
         case 1:
             return {
-                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP, tasteCastHTTP, bbqHTTP, militaryCityHTTP, puroPoliticsHTTP],
-                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS, tasteCastHTTPS, bbqHTTPS, militaryCityHTTPS, puroPoliticsHTTPS]
+                http: [theDocketHTTP, expressBriefingHTTP, enDepthHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP, militaryCityHTTP],
+                https: [theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS, militaryCityHTTPS]
             }
         // Tuesday
         case 2:
             return {
-                http: [militaryCityHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP, tasteCastHTTP, bbqHTTP, puroPoliticsHTTP],
-                https: [militaryCityHTTPS, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS, tasteCastHTTPS, bbqHTTPS, puroPoliticsHTTPS]
+                http: [puroPoliticsHTTP, theDocketHTTP, expressBriefingHTTP, enDepthHTTP, tasteCastHTTP, spursHTTP, militaryCityHTTP],
+                https: [puroPoliticsHTTPS, theDocketHTTPS, expressBriefingHTTPS, enDepthHTTPS, tasteCastHTTPS, spursHTTPS, militaryCityHTTPS]
             }
         // Wednesday
         case 3: {
             return {
-                http: [tasteCastHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP, bbqHTTP, militaryCityHTTP, puroPoliticsHTTP],
-                https: [tasteCastHTTPS, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS, bbqHTTPS, militaryCityHTTPS, puroPoliticsHTTPS]
+                http: [tasteCastHTTP, puroPoliticsHTTP, expressBriefingHTTP, theDocketHTTP, enDepthHTTP, spursHTTP, militaryCityHTTP],
+                https: [tasteCastHTTPS, puroPoliticsHTTPS, expressBriefingHTTPS, theDocketHTTPS, enDepthHTTPS, spursHTTPS, militaryCityHTTPS]
             }
         }
         // Thursday
         case 4: {
             return {
-                http: [puroPoliticsHTTP, expressBriefingHTTP, tasteCastHTTP, theDocketHTTP, enDepthHTTP, bbqHTTP, militaryCityHTTP],
-                https: [puroPoliticsHTTPS, expressBriefingHTTPS, tasteCastHTTPS, theDocketHTTPS, enDepthHTTPS, bbqHTTPS, militaryCityHTTPS]
+                http: [expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, theDocketHTTP, enDepthHTTP, spursHTTP],
+                https: [expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, theDocketHTTPS, enDepthHTTPS, spursHTTPS]
             }
         }
         // Friday
         case 5:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, tasteCastHTTP, theDocketHTTP, bbqHTTP, militaryCityHTTP, puroPoliticsHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, tasteCastHTTPS, theDocketHTTPS, bbqHTTPS, militaryCityHTTPS, puroPoliticsHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, theDocketHTTP, spursHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, theDocketHTTPS, spursHTTPS]
             }
         // Saturday
         case 6:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, tasteCastHTTP, theDocketHTTP, bbqHTTP, militaryCityHTTP, puroPoliticsHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, tasteCastHTTPS, theDocketHTTPS, bbqHTTPS, militaryCityHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS]
             }
         default:
             return {
-                http: [expressBriefingHTTP, enDepthHTTP, theDocketHTTP, tasteCastHTTP, bbqHTTP, militaryCityHTTP, puroPoliticsHTTP],
-                https: [expressBriefingHTTPS, enDepthHTTPS, theDocketHTTPS, tasteCastHTTPS, bbqHTTPS, militaryCityHTTPS, puroPoliticsHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS]
             }
     }
+}
+
+// if it is the first friday of the month, lead with the BBQ podcast
+// for the 6 days following the first Friday, step BBQ back one position in list
+// in all other cases, hide BBQ podcast
+const addBBQPodcast = (baseList: PodcastListObject): PodcastListObject => {
+    const now = new Date();
+    const firstFriday = getFirstDayInMonth(now, 5).getDate();
+    const distanceFromFF = now.getDate() - firstFriday;
+
+    const bbqHTTP = 'http://52weeksofbbq.expressnews.libsynpro.com/rss';
+    const bbqHTTPS = 'https://52weeksofbbq.libsyn.com/rss';
+
+    if (distanceFromFF > -1 && distanceFromFF < 7) {
+        return {
+            http: spliceInPodcast(baseList.http, bbqHTTP, distanceFromFF),
+            https: spliceInPodcast(baseList.https, bbqHTTPS, distanceFromFF),
+        }
+    } else {
+        return baseList;
+    }
+}
+
+export const generatePodcastList = (): PodcastListObject => {
+    return addBBQPodcast(generatePodcastListBase());
 }
