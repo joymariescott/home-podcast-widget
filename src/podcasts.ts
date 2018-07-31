@@ -38,8 +38,8 @@ const generatePodcastListBase = (): PodcastListObject => {
         // Sunday
         case 0:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS, theDocketHTTPS]
             }
         // Monday
         case 1:
@@ -76,20 +76,20 @@ const generatePodcastListBase = (): PodcastListObject => {
         // Saturday
         case 6:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS, theDocketHTTPS]
             }
         default:
             return {
-                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP],
-                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS]
+                http: [enDepthHTTP, expressBriefingHTTP, militaryCityHTTP, tasteCastHTTP, puroPoliticsHTTP, spursHTTP, theDocketHTTP],
+                https: [enDepthHTTPS, expressBriefingHTTPS, militaryCityHTTPS, tasteCastHTTPS, puroPoliticsHTTPS, spursHTTPS, theDocketHTTPS]
             }
     }
 }
 
 // if it is the first friday of the month, lead with the BBQ podcast
 // for the 6 days following the first Friday, step BBQ back one position in list
-// in all other cases, hide BBQ podcast
+// in all other cases, put BBQ podcast at the end
 const addBBQPodcast = (baseList: PodcastListObject): PodcastListObject => {
     const now = new Date();
     const firstFriday = getFirstDayInMonth(now, 5).getDate();
@@ -104,7 +104,10 @@ const addBBQPodcast = (baseList: PodcastListObject): PodcastListObject => {
             https: spliceInPodcast(baseList.https, bbqHTTPS, distanceFromFF),
         }
     } else {
-        return baseList;
+        return {
+            http: baseList.http.concat([bbqHTTP]),
+            https: baseList.https.concat([bbqHTTPS]),
+        }
     }
 }
 
